@@ -10,17 +10,11 @@ class Core
     public function handle(Request $request): Response
     {
         $dispatcher = simpleDispatcher(function (RouteCollector $collector) {
-            $collector->get('/', function () {
-                $content = '<h1>Hello, World!!!!</h1>';
+            $routes = include BASE_PATH.'/routes/web.php';
 
-                return new Response($content);
-            });
-
-            $collector->get('/cars/{name}', function(array $vars) {
-                $content = "<h1>Car - {$vars['name']}</h1>";
-
-                return new Response($content);
-            });
+            foreach ($routes as $route){
+                $collector->addRoute(...$route);
+            }
         });
 
         $routeInfo = $dispatcher->dispatch(

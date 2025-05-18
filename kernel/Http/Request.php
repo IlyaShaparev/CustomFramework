@@ -19,7 +19,7 @@ class Request
 
     public function getPath(): string
     {
-        return strtok($this->server['REQUEST_URI']);
+        return strtok($this->server['REQUEST_URI'], '?');
     }
 
     public function getRequestMethod(): string
