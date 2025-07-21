@@ -19,9 +19,12 @@ class Router implements RouterInterface
     {
         [$handler, $vars] = $this->extractRouteInfo($request);
 
-        [$controller, $method] = $handler;
+        if (is_array($handler)) {
+            [$controller, $method] = $handler;
+            $handler = [new $controller, $method];
+        }
 
-        return [[new $controller, $method], $vars];
+        return [$handler, $vars];
     }
 
     /**
