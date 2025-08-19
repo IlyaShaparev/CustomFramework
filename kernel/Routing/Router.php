@@ -52,9 +52,13 @@ class Router implements RouterInterface
             case Dispatcher::METHOD_NOT_ALLOWED:
                 $allowedMethods = implode(' or ', $routeInfo[1]);
                 $message = "HTTP-method not supported. Try to use HTTP-method $allowedMethods";
-                throw new MethodNotAllowedException($message);
+                $e = new MethodNotAllowedException($message);
+                $e->setStatusCode(405);
+                throw $e;
             default:
-                throw new RouteNotFoundException("Route Not Found");
+                $e = new RouteNotFoundException("Route Not Found");
+                $e->setStatusCode(404);
+                throw $e;
         }
     }
 }
